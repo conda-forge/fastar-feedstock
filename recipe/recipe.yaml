@@ -16,7 +16,7 @@ source:
   sha256: d49114d5f0b76c5cc242875d90fa4706de45e0456ddedf416608ecd0787fb410
 
 build:
-  number: 0
+  number: 1
   script:
     env:
       ZSTD_SYS_USE_PKG_CONFIG: "1"
