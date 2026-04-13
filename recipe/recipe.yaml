@@ -2,7 +2,7 @@
 schema_version: 1
 
 context:
-  version: "0.10.0"
+  version: "0.11.0"
   maturin_min: "1.9"
   maturin_max: "2.0"
   cov_fail_linux: "83"
@@ -13,7 +13,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/f/fastar/fastar-${{ version }}.tar.gz
-  sha256: cba4452d6a33894faf5b0b9d55342a1259ad5c94cbdb16af09346084e0787680
+  sha256: aa7f100f7313c03fdb20f1385927ba95671071ba308ad0c1763fef295e1895ce
 
 build:
   number: 0
