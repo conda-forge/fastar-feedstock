@@ -2,7 +2,7 @@
 schema_version: 1
 
 context:
-  version: "0.11.0"
+  version: "0.12.0"
   cov_fail_linux: "83"
 
 package:
@@ -11,15 +11,24 @@ package:
 
 source:
   url: https://pypi.org/packages/source/f/fastar/fastar-${{ version }}.tar.gz
-  sha256: aa7f100f7313c03fdb20f1385927ba95671071ba308ad0c1763fef295e1895ce
+  sha256: bba71522eae6a7627a5514ffdd4ac9645ef27d82e23931d79fd974bb49c3f2ad
 
 build:
   number: 0
   script:
     env:
+      CARGO_PROFILE_RELEASE_LTO: fat
+      CARGO_PROFILE_RELEASE_STRIP: symbols
+      CARGO: cargo-auditable-wrapper${{ ".bat" if win }}
       ZSTD_SYS_USE_PKG_CONFIG: "1"
     content:
-      - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+      - if: win
+        then:
+          - copy "%RECIPE_DIR%\cargo-auditable-wrapper.bat" "%BUILD_PREFIX%\Library\bin\cargo-auditable-wrapper.bat"
+        else:
+          - cp "${RECIPE_DIR}/cargo-auditable-wrapper.sh" "${BUILD_PREFIX}/bin/cargo-auditable-wrapper"
+          - chmod 755 "${BUILD_PREFIX}/bin/cargo-auditable-wrapper"
+      - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation --disable-pip-version-check
       - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 
 requirements:
@@ -28,9 +37,10 @@ requirements:
     - ${{ compiler("c") }}
     - ${{ stdlib("c") }}
     - cargo-bundle-licenses
+    - cargo-auditable
     - pkg-config
   host:
-    - maturin >=1.9,<2.0
+    - maturin >=1.14.1,<2.0
     - pip
     - python
     - zstd
