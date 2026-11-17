@@ -40,7 +40,7 @@ build:
           - copy "%RECIPE_DIR%\${{ cargo_wrapper }}" "%BUILD_PREFIX%\Library\bin\"
         else:
           - cp "${RECIPE_DIR}/${{ cargo_wrapper }}" "${BUILD_PREFIX}/bin/"
-          - chmod 755 "${BUILD_PREFIX}/${{ cargo_wrapper }}"
+          - chmod 755 "${BUILD_PREFIX}/bin/${{ cargo_wrapper }}"
       - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation --disable-pip-version-check --check-build-dependencies
       - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
       # the benchmarks are not actionable, and pytest-codspeed-feedstock seems broken
